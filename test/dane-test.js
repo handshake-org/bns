@@ -106,43 +106,41 @@ describe('DANE', function() {
   if (process.browser)
     return;
 
-  it('should verify spki+sha256 cert (www.ietf.org)', async () => {
+  it('should verify spki+sha256 cert (getfedora.org)', async () => {
+    // openssl s_client -showcerts -connect getfedora.org:443 < /dev/null
     const cert = fromBase64(`
-      MIIFUTCCBDmgAwIBAgIIITAshaEP0OswDQYJKoZIhvcNAQELBQAwgcYxCzAJBgNV
-      BAYTAlVTMRAwDgYDVQQIEwdBcml6b25hMRMwEQYDVQQHEwpTY290dHNkYWxlMSUw
-      IwYDVQQKExxTdGFyZmllbGQgVGVjaG5vbG9naWVzLCBJbmMuMTMwMQYDVQQLEypo
-      dHRwOi8vY2VydHMuc3RhcmZpZWxkdGVjaC5jb20vcmVwb3NpdG9yeS8xNDAyBgNV
-      BAMTK1N0YXJmaWVsZCBTZWN1cmUgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IC0gRzIw
-      HhcNMTcwNjEyMTAxMjAwWhcNMTgwODExMjMxMjUwWjA4MSEwHwYDVQQLExhEb21h
-      aW4gQ29udHJvbCBWYWxpZGF0ZWQxEzARBgNVBAMMCiouaWV0Zi5vcmcwggEiMA0G
-      CSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC2eMubW2zWELh8023dSdAP3LvdsNeC
-      KhPJZhIjdxr8o1+5PJ2MVMRgCaqe4asE5R+BuYfc9FDQCamqWOBZNvd3crwfhQW8
-      NZBM9JLbUgyObyip3X2cTkbFaKsa7SgNHOFYsd7VFntmuiEI+D/U5yzLjtBm4raV
-      oUHSsSatFYGYRhsOXf/DF/ld+oiqk7KckHTa2FetMJxMztHPUWoIW39lVkHmEpjZ
-      L4JN0T04hUqWvhYcx+69Rh46PToaTAsUkc2/a1T62i8jeZhHFS5jhS6mRLcwL461
-      7LtcqbU/4g2NZah6CbqIIC3dW6ylXP7qlTbGCXeesBUxAcHh9F5A8fSlAgMBAAGj
-      ggHOMIIByjAMBgNVHRMBAf8EAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEF
-      BQcDAjAOBgNVHQ8BAf8EBAMCBaAwPAYDVR0fBDUwMzAxoC+gLYYraHR0cDovL2Ny
-      bC5zdGFyZmllbGR0ZWNoLmNvbS9zZmlnMnMxLTU2LmNybDBjBgNVHSAEXDBaME4G
-      C2CGSAGG/W4BBxcBMD8wPQYIKwYBBQUHAgEWMWh0dHA6Ly9jZXJ0aWZpY2F0ZXMu
-      c3RhcmZpZWxkdGVjaC5jb20vcmVwb3NpdG9yeS8wCAYGZ4EMAQIBMIGGBggrBgEF
-      BQcBAQR6MHgwKgYIKwYBBQUHMAGGHmh0dHA6Ly9vY3NwLnN0YXJmaWVsZHRlY2gu
-      Y29tLzBKBggrBgEFBQcwAoY+aHR0cDovL2NlcnRpZmljYXRlcy5zdGFyZmllbGR0
-      ZWNoLmNvbS9yZXBvc2l0b3J5L3NmaWcyLmNydC5kZXIwHwYDVR0jBBgwFoAUJUWB
-      aFAmOD07LSy+zWrZtj2zZmMwHwYDVR0RBBgwFoIKKi5pZXRmLm9yZ4IIaWV0Zi5v
-      cmcwHQYDVR0OBBYEFAb+C6vY5nRu/MRzAoX3qUh+0TRPMA0GCSqGSIb3DQEBCwUA
-      A4IBAQDkjdd7Mz2F83bfBNjAS0uN0mGIn2Z67dcWP+klzp7JzGb+qdbPZsI0aHKZ
-      UEh0Pl71hcn8LlhYl+n7GJUGhW7CaOVqhzHkxfyfIls6BJ+pL6mIx5be8xqSV04b
-      zyPBZcPnuFdi/dXAgjE9iSFHfNH8gthiXgzgiIPIjQp2xuJDeQHWT5ZQ5gUxF8qP
-      ecO5L6IwMzZFRuE6SYzFynsOMOGjsPYJkYLm3JYwUulDz7OtRABwN5wegc5tTgq5
-      9HaFOULLCdMakLIRmMC0PzSI+m3+cYoZ6ue/8q9my7HgekcVMYQ5lRKncrs3GMxo
-      WNyYOpbGqBfooA8nwwE20fpacX2i
+      MIIEsTCCA5mgAwIBAgIQBOHnpNxc8vNtwCtCuF0VnzANBgkqhkiG9w0BAQsFADBs
+      MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3
+      d3cuZGlnaWNlcnQuY29tMSswKQYDVQQDEyJEaWdpQ2VydCBIaWdoIEFzc3VyYW5j
+      ZSBFViBSb290IENBMB4XDTEzMTAyMjEyMDAwMFoXDTI4MTAyMjEyMDAwMFowcDEL
+      MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
+      LmRpZ2ljZXJ0LmNvbTEvMC0GA1UEAxMmRGlnaUNlcnQgU0hBMiBIaWdoIEFzc3Vy
+      YW5jZSBTZXJ2ZXIgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC2
+      4C/CJAbIbQRf1+8KZAayfSImZRauQkCbztyfn3YHPsMwVYcZuU+UDlqUH1VWtMIC
+      Kq/QmO4LQNfE0DtyyBSe75CxEamu0si4QzrZCwvV1ZX1QK/IHe1NnF9Xt4ZQaJn1
+      itrSxwUfqJfJ3KSxgoQtxq2lnMcZgqaFD15EWCo3j/018QsIJzJa9buLnqS9UdAn
+      4t07QjOjBSjEuyjMmqwrIw14xnvmXnG3Sj4I+4G3FhahnSMSTeXXkgisdaScus0X
+      sh5ENWV/UyU50RwKmmMbGZJ0aAo3wsJSSMs5WqK24V3B3aAguCGikyZvFEohQcft
+      bZvySC/zA/WiaJJTL17jAgMBAAGjggFJMIIBRTASBgNVHRMBAf8ECDAGAQH/AgEA
+      MA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIw
+      NAYIKwYBBQUHAQEEKDAmMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2Vy
+      dC5jb20wSwYDVR0fBEQwQjBAoD6gPIY6aHR0cDovL2NybDQuZGlnaWNlcnQuY29t
+      L0RpZ2lDZXJ0SGlnaEFzc3VyYW5jZUVWUm9vdENBLmNybDA9BgNVHSAENjA0MDIG
+      BFUdIAAwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL0NQ
+      UzAdBgNVHQ4EFgQUUWj/kK8CB3U8zNllZGKiErhZcjswHwYDVR0jBBgwFoAUsT7D
+      aQP4v0cB1JgmGggC72NkK8MwDQYJKoZIhvcNAQELBQADggEBABiKlYkD5m3fXPwd
+      aOpKj4PWUS+Na0QWnqxj9dJubISZi6qBcYRb7TROsLd5kinMLYBq8I4g4Xmk/gNH
+      E+r1hspZcX30BJZr01lYPf7TMSVcGDiEo+afgv2MW5gxTs14nhr9hctJqvIni5ly
+      /D6q1UEL2tU2ob8cbkdJf17ZSHwD2f2LSaCYJkJA69aSEaRkCldUxPUd1gJea6zu
+      xICaEnL6VpPX/78whQYwvwt/Tv9XBZ0k7YXDK/umdaisLRbvfXknsuvCnQsH6qqF
+      0wGjIChBWUMo0oHjqvbsezt3tkBigAVBRQHvFwY+3sAzm2fTYS5yh+Rp/BIAV0Ae
+      cPUeybQ=
     `);
 
     // Hack for testing.
     dns._allowInsecure = true;
 
-    const rrs = await dns.resolveTLSA('www.ietf.org', 'tcp', 443);
+    const rrs = await dns.resolveTLSA('getfedora.org', 'tcp', 443);
 
     assert(Array.isArray(rrs));
     assert(rrs.length >= 1);
